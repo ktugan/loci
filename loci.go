@@ -36,8 +36,6 @@ func tagFromDockerfile(dockerFilePath string) string {
 	return tag
 }
 
-
-
 func BuildImage(cli *client.Client, dockerFilePath string) string {
 	if dockerFilePath == "" {
 		log.Fatal("Path to Dockerfile cannot be empty")
@@ -51,12 +49,11 @@ func BuildImage(cli *client.Client, dockerFilePath string) string {
 	ctx, _ := archive.TarWithOptions(base, &archive.TarOptions{})
 	resp, err := cli.ImageBuild(context.Background(), ctx, types.ImageBuildOptions{
 		Dockerfile: filename,
-		Tags: []string{tag},
+		Tags:       []string{tag},
 	})
 	if err != nil {
 		panic(err)
 	}
-
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
@@ -66,8 +63,38 @@ func BuildImage(cli *client.Client, dockerFilePath string) string {
 	return tag
 }
 
-type config struct {
-	BuildFolder		string
+type Volume struct {
+	Source    string
+	Target    string
+	Immutable bool
+}
+
+type Config struct {
+	BuildFolder          string //default: /build
+	ImmutableBuildFolder bool   //default: false
+	ExtraVolumes         []Volume
+	Dockerfile           string //either set Dockerfile or Image, not both... I think
+	Rebuild              bool
+	Image                string //either set Dockerfile or Image, not both... I think
+	EnvironmentVars      map[string]string
+	Command              string
+}
+
+func checkImageExists(cli *client.Client, image string) bool {
+	//todo check if a specific image exists in the `docker image` command
+	return false
+}
+
+func prepConfig(config *Config) {
+	if config.BuildFolder == "" {
+		config.BuildFolder = "/build"
+	}
+	if config.Dockerfile != "" && config.Image != "" {
+		log.Fatal("Cannot both define parameter Dockerfile and Image.")
+	}
+	//todo check if tag already exists and if yes exists EXCEPT the rebuild flag is set
+
+	//todo docker pull if image
 
 }
 
@@ -78,19 +105,27 @@ func main() {
 	}
 
 	//todo need to build or build image first
-
 	//-------------- PARAMETER PART --------------------
+	config := Config{
+		BuildFolder:          "",
+		ImmutableBuildFolder: false,
+		ExtraVolumes:         nil,
+		Dockerfile:           "/home/kadir/workspace/kubernetes/docker-automation/Dockerfile",
+		Image:                "",
+		EnvironmentVars:      nil,
+		Command:              "ls",
+	}
+	prepConfig(&config)
 	image := ""
 	buildFlag := false
-	pDockerfile := "/home/kadir/workspace/kubernetes/docker-automation/Dockerfile"
 	if buildFlag {
-		image = BuildImage(cli, pDockerfile)
-	}else{
-		image = tagFromDockerfile(pDockerfile)
+		image = BuildImage(cli, config.Dockerfile)
+	} else {
+		image = tagFromDockerfile(config.Dockerfile)
 	}
 
 	// ----------- END PARAMETER PART --------
-	if image == ""  {
+	if image == "" {
 		log.Fatal("No tag given") // todo probably just temporary and needs to be put into the parser.
 	}
 
@@ -100,13 +135,13 @@ func main() {
 	}
 
 	resp, err := cli.ContainerCreate(context.Background(), &container.Config{
-		Image: image,
-		Cmd:   []string{"bash", "-c", "ls"},
+		Image:      image,
+		Cmd:        []string{"bash", "-c", "ls"},
 		WorkingDir: "/build",
 	}, &container.HostConfig{
 		Mounts: []mount.Mount{
 			mount.Mount{
-				Type: mount.TypeBind,
+				Type:   mount.TypeBind,
 				Source: "/home/kadir/.aws",
 				Target: "/root/.ssh",
 			},
@@ -138,4 +173,3 @@ func main() {
 	//fmt.Printf(resp.ID, resp.Warnings)
 
 }
-
