@@ -3,16 +3,18 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
+
+	"github.com/docker/docker/client"
+	"log"
+	"reflect"
 )
 
 func checkImageExists(cli *client.Client, image string) bool {
@@ -40,6 +42,10 @@ func checkImageExists(cli *client.Client, image string) bool {
 	return false
 }
 
+type dockerBuildJson struct {
+	Content string `json:"stream"`
+}
+
 func BuildImage(cli *client.Client, config LociConfig) string {
 
 	if config.Dockerfile == "" {
@@ -62,11 +68,24 @@ func BuildImage(cli *client.Client, config LociConfig) string {
 		panic(err)
 	}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
-	newStr := buf.String()
+	buffer := new(bytes.Buffer)
+	_, err = buffer.ReadFrom(resp.Body)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Printf(newStr) //todo remove
+	resultLines := strings.Split(buffer.String(), "\n")
+
+	//var js map[string]interface{}
+
+	var parsed dockerBuildJson
+	for _, line := range resultLines {
+		_ = json.Unmarshal([]byte(line), &parsed)
+		if err == nil {
+			fmt.Printf("%s", parsed.Content)
+		}
+	}
+
 	return config.Image
 }
 

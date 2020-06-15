@@ -41,7 +41,7 @@ func loci(config LociConfig) {
 	}
 	resp, err := cli.ContainerCreate(context.Background(), &container.Config{
 		Image:      config.Image,
-		Cmd:        []string{"bash", "-c", "ls"}, //todo replace with config
+		Cmd:        []string{"sh", "-c", config.Command}, //todo replace with config
 		WorkingDir: "/build",
 	}, &container.HostConfig{
 		Mounts: []mount.Mount{
