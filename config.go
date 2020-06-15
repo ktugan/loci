@@ -6,21 +6,21 @@ import (
 	"path/filepath"
 )
 
-type Volume struct {
-	Source    string
-	Target    string
-	Immutable bool
+type LociConfig struct {
+	Image                string            `yaml:"image"`
+	Dockerfile           string            `yaml:"dockerfile"`
+	BuildFolder          string            `yaml:"build_folder"`           //default: /build
+	ImmutableBuildFolder bool              `yaml:"immutable_build_folder"` //default: false
+	ExtraVolumes         []Volume          `yaml:"extra_volumes"`
+	Rebuild              bool              `yaml:"rebuild"`
+	EnvironmentVars      map[string]string `yaml:"environment"`
+	Command              string            `yaml:"command"`
 }
 
-type LociConfig struct {
-	BuildFolder          string //default: /build
-	ImmutableBuildFolder bool   //default: false
-	ExtraVolumes         []Volume
-	Dockerfile           string //either set Dockerfile or Image, not both... I think
-	Rebuild              bool
-	Image                string //either set Dockerfile or Image, not both... I think
-	EnvironmentVars      map[string]string
-	Command              string
+type Volume struct {
+	Source    string `yaml:"source"`
+	Target    string `yaml:"target"`
+	Immutable bool   `yaml:"immutable"`
 }
 
 func fileExists(filename string) bool {

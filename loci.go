@@ -83,15 +83,7 @@ func loci(config LociConfig) {
 }
 
 func main() {
-	config := LociConfig{
-		BuildFolder:          "",
-		ImmutableBuildFolder: false,
-		ExtraVolumes:         nil,
-		Dockerfile:           "/home/kadir/workspace/kubernetes/docker-automation/Dockerfile",
-		Image:                "",
-		EnvironmentVars:      nil,
-		Command:              "ls",
-	}
+	config := LoadConfig()
 
 	err := prepConfig(&config)
 	if err != nil {
