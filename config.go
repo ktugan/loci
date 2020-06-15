@@ -65,9 +65,8 @@ func prepConfig(config *LociConfig) error {
 	return nil
 }
 
-
 type BadConfig struct {
-	Message string
+	Message   string
 	ExtraInfo string
 }
 

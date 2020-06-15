@@ -5,16 +5,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/pkg/archive"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/docker/docker/client"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/pkg/archive"
+
 	"log"
 	"reflect"
+
+	"github.com/docker/docker/client"
 )
 
 func checkImageExists(cli *client.Client, image string) bool {

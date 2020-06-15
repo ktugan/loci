@@ -1,10 +1,10 @@
 package main
 
 import (
-	"gotest.tools/assert"
 	"testing"
-)
 
+	"gotest.tools/assert"
+)
 
 func TestDockerfileNotExist(t *testing.T) {
 	//Should throw error if dockerfile does not exist.
