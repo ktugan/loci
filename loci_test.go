@@ -2,12 +2,10 @@ package main
 
 import (
 	"testing"
-
-	"gotest.tools/assert"
 )
 
 func TestDockerfileNotExist(t *testing.T) {
-	//Should throw error if dockerfile does not exist.
+	// We test if an error is correctly thrown.
 	c := LociConfig{
 		BuildFolder:          "",
 		ImmutableBuildFolder: false,
@@ -19,8 +17,10 @@ func TestDockerfileNotExist(t *testing.T) {
 	}
 	err := prepConfig(&c)
 	if err, ok := err.(*BadConfig); ok {
-		assert.Equal(t, err.Message, "Dockerfile does not exist at given path")
+		if err.Message != "Dockerfile does not exist at given path" {
+			t.Fatalf("%s", "Should fail, does not.")
+		}
+
 	}
-	print("hello")
 
 }

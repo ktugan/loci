@@ -7,9 +7,8 @@
 - repo: git://github.com/TekWizely/pre-commit-golang
   rev: v0.8.0
   hooks:
-    -   id: go-build-pkg
-    -   id: go-test-pkg
-    -   id: go-vet
+    -   id: go-build-mod
+    -   id: go-test-mod
         # Formatters
     -   id: go-fmt
     -   id: go-imports
