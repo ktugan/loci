@@ -1,4 +1,4 @@
-package main
+package loci
 
 import (
 	"io/ioutil"

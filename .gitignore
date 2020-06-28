@@ -3,6 +3,7 @@
 
 # Binaries for programs and plugins
 loci
+cmd/cli
 *.exe
 *.exe~
 *.dll

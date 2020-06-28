@@ -1,4 +1,4 @@
-package main
+package loci
 
 import (
 	"context"
@@ -20,7 +20,7 @@ import (
 // todo: feature - gitlab ci parser?
 // todo: env variables
 
-func loci(config LociConfig) {
+func Loci(config LociConfig) {
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		panic(err)
@@ -80,15 +80,4 @@ func loci(config LociConfig) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func main() {
-	config := LoadConfig()
-
-	err := prepConfig(&config)
-	if err != nil {
-		panic(err)
-	}
-
-	loci(config)
 }

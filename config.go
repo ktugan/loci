@@ -1,4 +1,4 @@
-package main
+package loci
 
 import (
 	"fmt"
@@ -31,7 +31,7 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
-func prepConfig(config *LociConfig) error {
+func PrepConfig(config *LociConfig) error {
 	if config.BuildFolder == "" {
 		config.BuildFolder = "/build"
 	}

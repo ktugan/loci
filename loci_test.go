@@ -1,4 +1,4 @@
-package main
+package loci
 
 import (
 	"testing"
@@ -15,7 +15,7 @@ func TestDockerfileNotExist(t *testing.T) {
 		EnvironmentVars:      nil,
 		Command:              "ls",
 	}
-	err := prepConfig(&c)
+	err := PrepConfig(&c)
 	if err, ok := err.(*BadConfig); ok {
 		if err.Message != "Dockerfile does not exist at given path" {
 			t.Fatalf("%s", "Should fail, does not.")
