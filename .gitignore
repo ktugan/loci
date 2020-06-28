@@ -2,13 +2,12 @@
 .idea
 
 # Binaries for programs and plugins
-loci
-cmd/cli
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
+loci
 
 # Test binary, built with `go test -c`
 *.test

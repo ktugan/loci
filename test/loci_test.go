@@ -1,12 +1,14 @@
-package loci
+package test
 
 import (
 	"testing"
+
+	"github.com/ktugan/loci/localci"
 )
 
 func TestDockerfileNotExist(t *testing.T) {
 	// We test if an error is correctly thrown.
-	c := LociConfig{
+	c := localci.LociConfig{
 		BuildFolder:          "",
 		ImmutableBuildFolder: false,
 		ExtraVolumes:         nil,
@@ -15,8 +17,8 @@ func TestDockerfileNotExist(t *testing.T) {
 		EnvironmentVars:      nil,
 		Command:              "ls",
 	}
-	err := PrepConfig(&c)
-	if err, ok := err.(*BadConfig); ok {
+	err := localci.PrepConfig(&c)
+	if err, ok := err.(*localci.BadConfig); ok {
 		if err.Message != "Dockerfile does not exist at given path" {
 			t.Fatalf("%s", "Should fail, does not.")
 		}

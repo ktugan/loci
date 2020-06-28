@@ -1,4 +1,4 @@
-package loci
+package localci
 
 import (
 	"bytes"

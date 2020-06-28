@@ -1,9 +1,9 @@
-package main
+package commands
 
 import (
 	"fmt"
 
-	"github.com/ktugan/loci"
+	loci2 "github.com/ktugan/loci/localci"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -40,17 +40,17 @@ func initConfig() {
 }
 
 func execute(cmd *cobra.Command, args []string) {
-	config := loci.LoadConfig(configFile)
+	config := loci2.LoadConfig(configFile)
 
-	err := loci.PrepConfig(&config)
+	err := loci2.PrepConfig(&config)
 	if err != nil {
 		panic(err)
 	}
 
-	loci.Loci(config)
+	loci2.Loci(config)
 }
 
-func main() {
+func Cli() {
 	err := rootCmd.Execute()
 	if err != nil {
 		panic(err)
