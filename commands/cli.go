@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	loci2 "github.com/ktugan/loci/localci"
+	"github.com/ktugan/loci/localci"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -40,14 +40,14 @@ func initConfig() {
 }
 
 func execute(cmd *cobra.Command, args []string) {
-	config := loci2.LoadConfig(configFile)
+	config := localci.LoadConfig(configFile)
 
-	err := loci2.PrepConfig(&config)
+	err := localci.PrepConfig(&config)
 	if err != nil {
 		panic(err)
 	}
 
-	loci2.Loci(config)
+	localci.Loci(config)
 }
 
 func Cli() {
