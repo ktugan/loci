@@ -78,8 +78,7 @@ func (e *BadConfig) Error() string {
 	return fmt.Sprintf("%s: %s", e.Message, e.ExtraInfo)
 }
 
-func LoadConfig() LociConfig {
-	fname := ".loci.yml"
+func LoadConfig(fname string) LociConfig {
 	if !fileExists(fname) {
 		log.Fatal(".loci.yml not found in current folder.")
 	}
