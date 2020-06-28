@@ -2,12 +2,8 @@ package localci
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
-
-	"gopkg.in/yaml.v2"
 )
 
 type LociConfig struct {
@@ -76,27 +72,4 @@ type BadConfig struct {
 
 func (e *BadConfig) Error() string {
 	return fmt.Sprintf("%s: %s", e.Message, e.ExtraInfo)
-}
-
-func LoadConfig(fname string) LociConfig {
-	if !fileExists(fname) {
-		log.Fatal(".loci.yml not found in current folder.")
-	}
-
-	f, err := os.Open(fname)
-	if err != nil {
-		panic(err)
-	}
-
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		panic(err)
-	}
-	var config LociConfig
-	err = yaml.Unmarshal(b, &config)
-	if err != nil {
-		panic(err)
-	}
-
-	return config
 }

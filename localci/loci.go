@@ -27,7 +27,7 @@ func Loci(config LociConfig) {
 	}
 
 	//Check if rebuild is set or if we dont have the image locally. On either of these conditions pull or build.
-	if config.Rebuild || checkImageExists(cli, config.Image) {
+	if config.Rebuild || !checkImageExists(cli, config.Image) {
 		if config.Dockerfile != "" {
 			BuildImage(cli, config)
 		} else {

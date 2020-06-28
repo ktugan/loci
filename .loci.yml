@@ -1,8 +1,9 @@
+profile: default
 image: "alpine:latest"
 #dockerfile: ""
 #build_folder: ""
 immutable_build_folder: false
 extra_volumes: []
-rebuild: true
+rebuild: false
 environment: {}
-command: "ls /usr/bin"
+command: "echo $PWD"
